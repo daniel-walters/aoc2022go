@@ -1,19 +1,16 @@
 package utils
 
 import (
+	"aoc/consts"
 	"fmt"
 	"os"
 )
-
-const Red = "\033[31m"
-const Reset = "\033[0m"
-const Green = "\033[32m"
 
 func HandleFileClose(file *os.File) {
 	file.Close()
 
 	if r := recover(); r != nil {
-		fmt.Printf("%s[ERROR]: %s%s\n", Red, Reset, r)
+		fmt.Printf("%s[ERROR]: %s%s\n", consts.Red, consts.Reset, r)
 		os.Exit(1)
 	}
 }
