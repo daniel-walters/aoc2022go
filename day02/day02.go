@@ -8,71 +8,114 @@ import (
 	"strings"
 )
 
-func decodeHand(encodedHand string) (string, error) {
+type Hand int
+type Result int
+
+const (
+	WIN Result = iota
+	DRAW
+	LOSE
+)
+
+const (
+	ROCK Hand = iota
+	PAPER
+	SCISSORS
+)
+
+func (h Hand) score() int {
+	switch h {
+	case ROCK:
+		return 1
+	case PAPER:
+		return 2
+	case SCISSORS:
+		return 3
+	}
+
+	return -1
+}
+
+func (r Result) score() int {
+	switch r {
+	case WIN:
+		return 6
+	case DRAW:
+		return 3
+	case LOSE:
+		return 0
+	}
+
+	return -1
+}
+
+func (h Hand) losesTo() Hand {
+	switch h {
+	case ROCK:
+		return PAPER
+	case PAPER:
+		return SCISSORS
+	case SCISSORS:
+		return ROCK
+	}
+
+	return -1
+}
+
+func (h Hand) beats() Hand {
+	switch h {
+	case ROCK:
+		return SCISSORS
+	case PAPER:
+		return ROCK
+	case SCISSORS:
+		return PAPER
+	}
+
+	return -1
+}
+
+func (h Hand) scoreAgainst(h2 Hand) int {
+	var outcome Result
+
+	if h.beats() == h2 {
+		outcome = WIN
+	} else if h.losesTo() == h2 {
+		outcome = LOSE
+	} else {
+		outcome = DRAW
+	}
+
+	return outcome.score() + h.score()
+}
+
+func decodeHand(encodedHand string) (Hand, error) {
 	switch encodedHand {
 	case "A", "X":
-		return "rock", nil
+		return ROCK, nil
 	case "B", "Y":
-		return "paper", nil
+		return PAPER, nil
 	case "C", "Z":
-		return "scissors", nil
-	default:
-		return "", errors.New("Invalid hand: " + encodedHand)
+		return SCISSORS, nil
 	}
+
+	return 0, errors.New("Invalid hand: " + encodedHand)
 }
 
-func getPoints(hand string) (int, error) {
-	switch hand {
-	case "rock":
-		return 1, nil
-	case "paper":
-		return 2, nil
-	case "scissors":
-		return 3, nil
-	default:
-		return 0, errors.New("Invalid hand: " + hand)
+func getWinner(opponent, player Hand) Result {
+	if player.beats() == opponent {
+		return WIN
+	} else if player.losesTo() == opponent {
+		return LOSE
+	} else if player == opponent {
+		return DRAW
 	}
+
+	return -1
 }
 
-func getWinner(opponent, player string) string {
-	if player == "rock" {
-		if opponent == "rock" {
-			return "draw"
-		} else if opponent == "paper" {
-			return "lose"
-		} else {
-			return "win"
-		}
-	} else if player == "paper" {
-		if opponent == "rock" {
-			return "win"
-		} else if opponent == "paper" {
-			return "draw"
-		} else {
-			return "lose"
-		}
-	} else {
-		if opponent == "rock" {
-			return "lose"
-		} else if opponent == "paper" {
-			return "win"
-		} else {
-			return "draw"
-		}
-	}
-}
-
-func calculateScore(opponent, player string) int {
-	handScore, err := getPoints(player)
-	utils.PanicIfError(err)
-	outcome := getWinner(opponent, player)
-	if outcome == "win" {
-		handScore += 6
-	} else if outcome == "draw" {
-		handScore += 3
-	}
-
-	return handScore
+func calculateScore(opponent, player Hand) int {
+	return player.scoreAgainst(opponent)
 }
 
 func Main(input string) (int, int) {
@@ -99,42 +142,23 @@ func PartOne(inputFile string) int {
 		player, err := decodeHand(splitLine[1])
 		utils.PanicIfError(err)
 
-		score := calculateScore(opponent, player)
-		totalScore += score
+		totalScore += player.scoreAgainst(opponent)
 	}
 
 	return totalScore
 }
 
-func getWinningHand(opponent, result string) (string, error) {
+func getWinningHand(opponent Hand, result string) (Hand, error) {
 	switch result {
 	case "X":
-		if opponent == "rock" {
-			return "scissors", nil
-		} else if opponent == "paper" {
-			return "rock", nil
-		} else {
-			return "paper", nil
-		}
+		return opponent.beats(), nil
 	case "Y":
-		if opponent == "rock" {
-			return "rock", nil
-		} else if opponent == "paper" {
-			return "paper", nil
-		} else {
-			return "scissors", nil
-		}
+		return opponent, nil
 	case "Z":
-		if opponent == "rock" {
-			return "paper", nil
-		} else if opponent == "paper" {
-			return "scissors", nil
-		} else {
-			return "rock", nil
-		}
-	default:
-		return "", errors.New("Invalid result: " + result)
+		return opponent.losesTo(), nil
 	}
+
+	return -1, errors.New("Invalid result: " + result)
 }
 
 func PartTwo(inputFile string) int {
@@ -154,8 +178,7 @@ func PartTwo(inputFile string) int {
 		player, err := getWinningHand(opponent, splitLine[1])
 		utils.PanicIfError(err)
 
-		score := calculateScore(opponent, player)
-		totalScore += score
+		totalScore += player.scoreAgainst(opponent)
 	}
 
 	return totalScore
