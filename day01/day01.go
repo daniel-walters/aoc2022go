@@ -7,11 +7,9 @@ import (
 	"strconv"
 )
 
-func Main() (slnOne, slnTwo int) {
-	input := "day01/input.txt"
-
-	slnOne = PartOne(input)
-	slnTwo = PartTwo(input)
+func Main(input string) (int, int) {
+	slnOne := PartOne(input)
+	slnTwo := PartTwo(input)
 
 	return slnOne, slnTwo
 }

@@ -6,11 +6,15 @@ import (
 	"os"
 )
 
+func PrintError(err any) {
+	fmt.Printf("%s[ERROR]: %s%s\n", consts.Red, consts.Reset, err)
+}
+
 func HandleFileClose(file *os.File) {
 	file.Close()
 
 	if r := recover(); r != nil {
-		fmt.Printf("%s[ERROR]: %s%s\n", consts.Red, consts.Reset, r)
+		PrintError(r)
 		os.Exit(1)
 	}
 }
