@@ -21,9 +21,13 @@ const (
 	SCISSORS
 )
 
-var ErrNotAHand error = errors.New("Encountered a Hand not in ROCK, PAPER, SCISSORS")
+var ErrNotAHand error = errors.New(
+	"Encountered a Hand not in ROCK, PAPER, SCISSORS",
+)
 
-var ErrNotAResult error = errors.New("Encountered a Result not in WIN, LOSE, DRAW")
+var ErrNotAResult error = errors.New(
+	"Encountered a Result not in WIN, LOSE, DRAW",
+)
 
 func (h Hand) score() int {
 	switch h {

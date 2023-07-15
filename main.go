@@ -24,8 +24,14 @@ func main() {
 	flag.IntVar(&genDay, "gen", -1, "The day to generate (1 <= day <= 25)")
 	flag.Parse()
 
-	exitWithUsageIf(genDay == -1 && runDay == -1, "No arguments receieved")
-	exitWithUsageIf(genDay != -1 && runDay != -1, "Cannot combine arguments day and gen")
+	exitWithUsageIf(
+		genDay == -1 && runDay == -1,
+		"No arguments receieved",
+	)
+	exitWithUsageIf(
+		genDay != -1 && runDay != -1,
+		"Cannot combine arguments day and gen",
+	)
 
 	if runDay == -1 {
 		processGeneratorArg(genDay)
