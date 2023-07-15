@@ -2,8 +2,6 @@ package day01
 
 import (
 	"aoc/utils"
-	"bufio"
-	"os"
 	"strconv"
 )
 
@@ -15,11 +13,8 @@ func Main(input string) (int, int) {
 }
 
 func PartOne(inputFile string) int {
-	file, err := os.Open(inputFile)
-	defer utils.HandleFileClose(file)
-	utils.PanicIfError(err)
-
-	scanner := bufio.NewScanner(file)
+	scanner, closeFile := utils.GetLineScanner(inputFile)
+	defer closeFile()
 
 	maxCalories := 0
 	curCalories := 0
@@ -34,7 +29,9 @@ func PartOne(inputFile string) int {
 		}
 
 		lineNum, err := strconv.Atoi(line)
-		utils.PanicIfError(err)
+		if err != nil {
+			panic(err)
+		}
 
 		curCalories += lineNum
 	}
@@ -45,11 +42,8 @@ func PartOne(inputFile string) int {
 }
 
 func PartTwo(inputFile string) int {
-	file, err := os.Open(inputFile)
-	defer utils.HandleFileClose(file)
-	utils.PanicIfError(err)
-
-	scanner := bufio.NewScanner(file)
+	scanner, closeFile := utils.GetLineScanner(inputFile)
+	defer closeFile()
 
 	maxCalories := [3]int{0, 0, 0}
 	curCalories := 0
@@ -65,7 +59,9 @@ func PartTwo(inputFile string) int {
 		}
 
 		lineNum, err := strconv.Atoi(line)
-		utils.PanicIfError(err)
+		if err != nil {
+			panic(err)
+		}
 
 		curCalories += lineNum
 	}

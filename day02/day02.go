@@ -2,9 +2,7 @@ package day02
 
 import (
 	"aoc/utils"
-	"bufio"
 	"errors"
-	"os"
 	"strings"
 )
 
@@ -23,6 +21,10 @@ const (
 	SCISSORS
 )
 
+var ErrNotAHand error = errors.New("Encountered a Hand not in ROCK, PAPER, SCISSORS")
+
+var ErrNotAResult error = errors.New("Encountered a Result not in WIN, LOSE, DRAW")
+
 func (h Hand) score() int {
 	switch h {
 	case ROCK:
@@ -33,7 +35,7 @@ func (h Hand) score() int {
 		return 3
 	}
 
-	return -1
+	panic(ErrNotAHand)
 }
 
 func (r Result) score() int {
@@ -46,7 +48,7 @@ func (r Result) score() int {
 		return 0
 	}
 
-	return -1
+	panic(ErrNotAResult)
 }
 
 func (h Hand) losesTo() Hand {
@@ -59,7 +61,7 @@ func (h Hand) losesTo() Hand {
 		return ROCK
 	}
 
-	return -1
+	panic(ErrNotAHand)
 }
 
 func (h Hand) beats() Hand {
@@ -72,17 +74,18 @@ func (h Hand) beats() Hand {
 		return PAPER
 	}
 
-	return -1
+	panic(ErrNotAHand)
 }
 
 func (h Hand) scoreAgainst(h2 Hand) int {
 	var outcome Result
 
-	if h.beats() == h2 {
+	switch {
+	case h.beats() == h2:
 		outcome = WIN
-	} else if h.losesTo() == h2 {
+	case h.losesTo() == h2:
 		outcome = LOSE
-	} else {
+	default:
 		outcome = DRAW
 	}
 
@@ -105,13 +108,13 @@ func decodeHand(encodedHand string) (Hand, error) {
 func getWinner(opponent, player Hand) Result {
 	if player.beats() == opponent {
 		return WIN
-	} else if player.losesTo() == opponent {
-		return LOSE
-	} else if player == opponent {
-		return DRAW
 	}
 
-	return -1
+	if player.losesTo() == opponent {
+		return LOSE
+	}
+
+	return DRAW
 }
 
 func calculateScore(opponent, player Hand) int {
@@ -126,11 +129,9 @@ func Main(input string) (int, int) {
 }
 
 func PartOne(inputFile string) int {
-	file, err := os.Open(inputFile)
-	defer utils.HandleFileClose(file)
-	utils.PanicIfError(err)
+	scanner, closeFile := utils.GetLineScanner(inputFile)
+	defer closeFile()
 
-	scanner := bufio.NewScanner(file)
 	totalScore := 0
 
 	for scanner.Scan() {
@@ -138,9 +139,14 @@ func PartOne(inputFile string) int {
 		splitLine := strings.SplitN(line, " ", 2)
 
 		opponent, err := decodeHand(splitLine[0])
-		utils.PanicIfError(err)
+		if err != nil {
+			panic(err)
+		}
+
 		player, err := decodeHand(splitLine[1])
-		utils.PanicIfError(err)
+		if err != nil {
+			panic(err)
+		}
 
 		totalScore += player.scoreAgainst(opponent)
 	}
@@ -162,11 +168,9 @@ func getWinningHand(opponent Hand, result string) (Hand, error) {
 }
 
 func PartTwo(inputFile string) int {
-	file, err := os.Open(inputFile)
-	defer utils.HandleFileClose(file)
-	utils.PanicIfError(err)
+	scanner, closeFile := utils.GetLineScanner(inputFile)
+	defer closeFile()
 
-	scanner := bufio.NewScanner(file)
 	totalScore := 0
 
 	for scanner.Scan() {
@@ -174,9 +178,14 @@ func PartTwo(inputFile string) int {
 		splitLine := strings.SplitN(line, " ", 2)
 
 		opponent, err := decodeHand(splitLine[0])
-		utils.PanicIfError(err)
+		if err != nil {
+			panic(err)
+		}
+
 		player, err := getWinningHand(opponent, splitLine[1])
-		utils.PanicIfError(err)
+		if err != nil {
+			panic(err)
+		}
 
 		totalScore += player.scoreAgainst(opponent)
 	}
