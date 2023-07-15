@@ -8,9 +8,7 @@ import (
 const input = "input_test.txt"
 
 func TestPartOne(t *testing.T) {
-	t.Skip()
-
-	expected := 0
+	expected := 157
 	actual := day03.PartOne(input)
 
 	if expected != actual {
@@ -19,9 +17,7 @@ func TestPartOne(t *testing.T) {
 }
 
 func TestPartTwo(t *testing.T) {
-	t.Skip()
-
-	expected := 0
+	expected := 70
 	actual := day03.PartTwo(input)
 
 	if expected != actual {

@@ -2,6 +2,9 @@ package utils_test
 
 import (
 	"aoc/utils"
+	"bufio"
+	"reflect"
+	"strings"
 	"testing"
 )
 
@@ -32,5 +35,23 @@ func TestSum(t *testing.T) {
 
 	if wants != actual {
 		t.Errorf("got %d, wants %d", actual, wants)
+	}
+}
+
+func TestBatchScannerOutput(t *testing.T) {
+	scanner := bufio.NewScanner(
+		strings.NewReader("foo bar baz bar foo bar baz bar foo"),
+	)
+	scanner.Split(bufio.ScanWords)
+
+	wants := [][]string{
+		{"foo", "bar", "baz"},
+		{"bar", "foo", "bar"},
+		{"baz", "bar", "foo"},
+	}
+	actual := utils.BatchScannerOutput(3, scanner)
+
+	if !reflect.DeepEqual(wants, actual) {
+		t.Errorf("got %v, wants %v", actual, wants)
 	}
 }
