@@ -4,6 +4,7 @@ import (
 	"aoc/consts"
 	"aoc/day01"
 	"aoc/day02"
+	"aoc/generator"
 	"aoc/utils"
 	"flag"
 	"fmt"
@@ -16,26 +17,44 @@ var slnMap = map[int]func(input string) (int, int){
 }
 
 func main() {
-	var day int
-	flag.IntVar(&day, "day", -1, "The day to run (1 <= day <= 25)")
+	var runDay, genDay int
+	flag.IntVar(&runDay, "day", -1, "The day to run (1 <= day <= 25)")
+	flag.IntVar(&genDay, "gen", -1, "The day to generate (1 <= day <= 25)")
 	flag.Parse()
 
-	if day < 1 || day > 25 {
-		utils.PrintError("Invalid argument received")
+	exitWithUsage(genDay == -1 && runDay == -1, "No arguments receieved")
+	exitWithUsage(genDay != -1 && runDay != -1, "Cannot combine arguments day and gen")
+
+	if runDay == -1 {
+		exitWithUsage(genDay < 1 || genDay > 25, "gen must be in 1 <= gen <= 25")
+
+		generator.Generate(genDay)
+		fmt.Printf("Solution template generated for day %d", genDay)
+		os.Exit(0)
+	}
+
+	if genDay == -1 {
+		exitWithUsage(runDay < 1 || runDay > 25, "Invalid argument received")
+
+		fn, exists := slnMap[runDay]
+		if !exists {
+			utils.PrintError(fmt.Sprintf("Day %d may not be implemented", runDay))
+			os.Exit(1)
+		}
+
+		inputFile := fmt.Sprintf("day%02d/input.txt", runDay)
+
+		slnOne, slnTwo := fn(inputFile)
+		printSln(slnOne, slnTwo)
+	}
+}
+
+func exitWithUsage(condition bool, msg string) {
+	if condition {
+		utils.PrintError(msg)
 		flag.CommandLine.Usage()
 		os.Exit(1)
 	}
-
-	fn, exists := slnMap[day]
-	if !exists {
-		utils.PrintError(fmt.Sprintf("Day %d may not be implemented", day))
-		os.Exit(1)
-	}
-
-	inputFile := fmt.Sprintf("day%02d/input.txt", day)
-
-	slnOne, slnTwo := fn(inputFile)
-	printSln(slnOne, slnTwo)
 }
 
 func printSln(slnOne, slnTwo int) {
