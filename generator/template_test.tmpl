@@ -7,10 +7,24 @@ import (
 
 const input = "input_test.txt"
 
-func TestPartOne(t *testing T) {
+func TestPartOne(t *testing.T) {
   t.Skip()
+
+  expected := 0
+  actual := {{ .Day }}.PartOne(input)
+
+  if expected != actual {
+    t.Errorf("Expected: %d, Receieved: %d", expected, actual)
+  }
 }
 
-func TestPartTwo(t *testing T) {
+func TestPartTwo(t *testing.T) {
   t.Skip()
+
+  expected := 0
+  actual := {{ .Day }}.PartTwo(input)
+
+  if expected != actual {
+    t.Errorf("Expected: %d, Receieved: %d", expected, actual)
+  }
 }

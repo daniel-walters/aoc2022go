@@ -1,8 +1,10 @@
 package {{ .Day }}
 
-function Main(inputFile string) int {
+func Main(inputFile string) (int, int) {
   slnOne := PartOne(input)
   slnTwo := PartTwo(input)
+
+  return slnOne, slnTwo
 }
 
 func PartOne(inputFile string) int {
