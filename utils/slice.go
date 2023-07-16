@@ -1,7 +1,5 @@
 package utils
 
-import "strings"
-
 func Max(a, b int) int {
 	if a > b {
 		return a
@@ -29,12 +27,6 @@ func Map[T, K any](slice []T, pred func(item T) K) []K {
 	}
 
 	return newSlice
-}
-
-func SplitOnce(str, sep string) (string, string) {
-	split := strings.SplitN(str, sep, 2)
-
-	return split[0], split[1]
 }
 
 func Reverse[T any](slice []T) []T {
