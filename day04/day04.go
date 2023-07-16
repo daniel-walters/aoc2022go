@@ -6,7 +6,7 @@ import (
 	"strconv"
 )
 
-func Main(inputFile string) (int, int) {
+func Main(inputFile string) (any, any) {
 	slnOne := PartOne(inputFile)
 	slnTwo := PartTwo(inputFile)
 

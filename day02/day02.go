@@ -125,7 +125,7 @@ func calculateScore(opponent, player Hand) int {
 	return player.scoreAgainst(opponent)
 }
 
-func Main(input string) (int, int) {
+func Main(input string) (any, any) {
 	slnOne := PartOne(input)
 	slnTwo := PartTwo(input)
 
