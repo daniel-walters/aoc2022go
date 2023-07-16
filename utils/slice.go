@@ -17,3 +17,14 @@ func Sum(a ...int) int {
 
 	return sum
 }
+
+func Map[T, K any](slice []T, pred func(item T) K) []K {
+	newSlice := []K{}
+
+	for _, v := range slice {
+		mappedValue := pred(v)
+		newSlice = append(newSlice, mappedValue)
+	}
+
+	return newSlice
+}

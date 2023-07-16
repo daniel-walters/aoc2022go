@@ -5,6 +5,7 @@ import (
 	"aoc/day01"
 	"aoc/day02"
 	"aoc/day03"
+	"aoc/day04"
 	"aoc/generator"
 	"aoc/utils"
 	"flag"
@@ -16,6 +17,7 @@ var slnMap = map[int]func(input string) (int, int){
 	1: day01.Main,
 	2: day02.Main,
 	3: day03.Main,
+	4: day04.Main,
 }
 
 func main() {

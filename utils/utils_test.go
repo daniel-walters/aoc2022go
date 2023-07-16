@@ -55,3 +55,16 @@ func TestBatchScannerOutput(t *testing.T) {
 		t.Errorf("got %v, wants %v", actual, wants)
 	}
 }
+
+func TestMap(t *testing.T) {
+	slice := []int{2, 4, 6, 8}
+	mappingFn := func(num int) int {
+		return num + 2
+	}
+	wants := []int{4, 6, 8, 10}
+	actual := utils.Map(slice, mappingFn)
+
+	if !reflect.DeepEqual(wants, actual) {
+		t.Errorf("got %v, wants %v", actual, wants)
+	}
+}
