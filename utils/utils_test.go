@@ -21,7 +21,7 @@ func TestMax(t *testing.T) {
 
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {
-			res := utils.Max(test.input[0], test.input[1])
+			res := utils.Max(test.input[:])
 			if res != test.want {
 				t.Errorf("got %d, wants %d", res, test.want)
 			}

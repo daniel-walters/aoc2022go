@@ -23,7 +23,7 @@ func PartOne(inputFile string) int {
 		line := scanner.Text()
 
 		if line == "" {
-			maxCalories = utils.Max(maxCalories, curCalories)
+			maxCalories = utils.Max([]int{maxCalories, curCalories})
 			curCalories = 0
 			continue
 		}
@@ -36,7 +36,7 @@ func PartOne(inputFile string) int {
 		curCalories += lineNum
 	}
 
-	maxCalories = utils.Max(maxCalories, curCalories)
+	maxCalories = utils.Max([]int{maxCalories, curCalories})
 
 	return maxCalories
 }

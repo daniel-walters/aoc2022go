@@ -2,12 +2,15 @@ package utils
 
 import "math"
 
-func Max(a, b int) int {
-	if a > b {
-		return a
+func Max(slice []int) int {
+	max := math.MinInt
+	for _, v := range slice {
+		if v > max {
+			max = v
+		}
 	}
 
-	return b
+	return max
 }
 
 func Min(slice []int) int {
@@ -70,4 +73,13 @@ func Filter[T comparable](slice []T, pred func(item T) bool) []T {
 	}
 
 	return filtered
+}
+
+func Multiply(slice []int) int {
+	product := 1
+	for _, v := range slice {
+		product *= v
+	}
+
+	return product
 }
