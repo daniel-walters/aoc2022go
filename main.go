@@ -11,6 +11,7 @@ import (
 	"aoc/day07"
 	"aoc/day08"
 	"aoc/day09"
+	"aoc/day10"
 	"aoc/generator"
 	"aoc/utils"
 	"flag"
@@ -21,15 +22,16 @@ import (
 type slnFunc func(input string) (any, any)
 
 var slnMap = map[int]slnFunc{
-	1: day01.Main,
-	2: day02.Main,
-	3: day03.Main,
-	4: day04.Main,
-	5: day05.Main,
-	6: day06.Main,
-	7: day07.Main,
-	8: day08.Main,
-	9: day09.Main,
+	1:  day01.Main,
+	2:  day02.Main,
+	3:  day03.Main,
+	4:  day04.Main,
+	5:  day05.Main,
+	6:  day06.Main,
+	7:  day07.Main,
+	8:  day08.Main,
+	9:  day09.Main,
+	10: day10.Main,
 }
 
 func main() {
@@ -87,7 +89,7 @@ func exitWithUsageIf(condition bool, msg string) {
 }
 
 func printSln(slnOne, slnTwo any) {
-	fmt.Printf("%sPart 1: %s%v\n%sPart 2: %s%v\n",
+	fmt.Printf("%sPart 1:\n%s%v\n%sPart 2:\n%s%v\n",
 		consts.Green,
 		consts.Reset,
 		slnOne,
