@@ -12,6 +12,7 @@ import (
 	"aoc/day08"
 	"aoc/day09"
 	"aoc/day10"
+	"aoc/day11"
 	"aoc/generator"
 	"aoc/utils"
 	"flag"
@@ -32,6 +33,7 @@ var slnMap = map[int]slnFunc{
 	8:  day08.Main,
 	9:  day09.Main,
 	10: day10.Main,
+	11: day11.Main,
 }
 
 func main() {

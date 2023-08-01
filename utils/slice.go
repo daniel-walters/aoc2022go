@@ -1,6 +1,9 @@
 package utils
 
-import "math"
+import (
+	"math"
+	"strconv"
+)
 
 func Max(slice []int) int {
 	max := math.MinInt
@@ -82,4 +85,14 @@ func Multiply(slice []int) int {
 	}
 
 	return product
+}
+
+func StringsToInts(slice []string) []int {
+	return Map(slice, func(s string) int {
+		num, err := strconv.Atoi(s)
+		if err != nil {
+			panic(err)
+		}
+		return num
+	})
 }
