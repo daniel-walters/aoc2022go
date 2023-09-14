@@ -2,6 +2,7 @@ package utils
 
 import (
 	"math"
+	"slices"
 	"strconv"
 )
 
@@ -95,4 +96,14 @@ func StringsToInts(slice []string) []int {
 		}
 		return num
 	})
+}
+
+func TwoDClone[T any](slice [][]T) [][]T {
+    cloned := [][]T{}
+
+    for _, row := range slice {
+        cloned = append(cloned, slices.Clone(row))
+    }
+
+    return cloned
 }
