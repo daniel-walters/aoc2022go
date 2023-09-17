@@ -68,7 +68,7 @@ func CollectMap[T, K comparable](input map[T]K) []K {
 	return slice
 }
 
-func Filter[T comparable](slice []T, pred func(item T) bool) []T {
+func Filter[T any](slice []T, pred func(item T) bool) []T {
 	filtered := []T{}
 	for _, v := range slice {
 		if pred(v) {
